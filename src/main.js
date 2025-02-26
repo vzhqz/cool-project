@@ -2,8 +2,12 @@ import './style.css'
 import * as THREE from 'three'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
 
-const button = document.querySelector("button");
+
+const spinBtn = document.getElementById("spinBtn");
+const gridBtn = document.getElementById("gridBtn");
 let isSpinning = true;
+let gridShowing = false;
+
 
 const scene = new THREE.Scene();
 
@@ -16,36 +20,49 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 
-camera.position.setZ(30);
+camera.position.setZ(40);
+camera.position.setY(40);
+camera.position.setX(0);
 
 renderer.render(scene, camera);
 
-const monkeyTexture = new THREE.TextureLoader().load('monkey.png');
+const monkeyTexture = new THREE.TextureLoader().load('monkey.jpg');
 const geometry = new THREE.BoxGeometry(20, 20, 20, 20);
 const material = new THREE.MeshBasicMaterial({map: monkeyTexture});
 const monkey = new THREE.Mesh(geometry, material);
 scene.add(monkey);
 
-const pointLight = new THREE.PointLight(0xffffff);
-pointLight.position.set(5, 5, 5);
+
 const ambientLight = new THREE.AmbientLight(0xffffff, 10);
 
-scene.add(pointLight, ambientLight);
-
-const lightHelper = new THREE.PointLightHelper(pointLight);
-const gridHelper = new THREE.GridHelper(200, 50, 0x000, 0xffffff);
-scene.add(lightHelper, gridHelper);
+scene.add(ambientLight);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-button.addEventListener("click", () => {
+spinBtn.addEventListener("click", () => {
     isSpinning = !isSpinning;
-    button.textContent = isSpinning ? "Stop Spinning" : "Start Spinning";
+    spinBtn.textContent = isSpinning ? "Stop Spinning" : "Start Spinning";
+});
+
+const gridHelper = new THREE.GridHelper(200, 50, 0x000, 0xffffff);
+gridShowing = true;
+scene.add(gridHelper);
+
+gridBtn.addEventListener("click", () => {
+    gridShowing = !gridShowing;
+    gridBtn.textContent = gridShowing ? "Hide Grid" : "Show Grid";
+
+    if(gridShowing) {
+        scene.add(gridHelper);
+    }
+    else {
+        scene.remove(gridHelper);    
+    }
 });
 
 function addStar() {
     const geometry = new THREE.SphereGeometry(0.25, 24, 24);
-    const material = new THREE.MeshStandardMaterial({color: 'rgb(197, 65, 230)'});
+    const material = new THREE.MeshStandardMaterial({color: 'rgb(255, 255, 255)'});
     const star = new THREE.Mesh(geometry, material);
 
     const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(100));

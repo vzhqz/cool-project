@@ -5,13 +5,26 @@ canvas {
     left: 0
 }
 
-button {
+#spinBtn {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 10px;
+    left: 10px;
     padding: 10px 20px;
     font-size: 18px;
-    background-color: #ff6600;
+    background-color: #005eff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    z-index: 10;
+}
+
+#gridBtn {
+    position: absolute;
+    top: 65px;
+    left: 10px;
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #005eff;
     color: white;
     border: none;
     cursor: pointer;
