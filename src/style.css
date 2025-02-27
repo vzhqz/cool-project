@@ -5,10 +5,8 @@ canvas {
     left: 0
 }
 
-#spinBtn {
+button {
     position: absolute;
-    top: 10px;
-    left: 10px;
     padding: 10px 20px;
     font-size: 18px;
     background-color: #005eff;
@@ -16,17 +14,38 @@ canvas {
     border: none;
     cursor: pointer;
     z-index: 10;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+#spinBtn {
+    top: 10px;
+    left: 10px;
+
 }
 
 #gridBtn {
-    position: absolute;
     top: 65px;
     left: 10px;
+}
+
+#dotsBtn {
+    left: 10px;
+    top: 120px;
+}
+
+#imgBtn {
+    display: none;
+}
+
+.upload-button {
+    position: absolute;
     padding: 10px 20px;
     font-size: 18px;
-    background-color: #005eff;
+    background-color: #ff1e00;
     color: white;
     border: none;
     cursor: pointer;
     z-index: 10;
+    right: 10px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }

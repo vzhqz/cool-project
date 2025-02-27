@@ -1,13 +1,28 @@
 import './style.css'
 import * as THREE from 'three'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
-
+import {saveGridState, loadGridState, saveDotsState, loadDotsState} from './localStorage.js'
 
 const spinBtn = document.getElementById("spinBtn");
 const gridBtn = document.getElementById("gridBtn");
+const dotsBtn = document.getElementById("dotsBtn");
+const imgBtn = document.getElementById("imgBtn");
 let isSpinning = true;
-let gridShowing = false;
+let gridShowing = loadGridState();
+let dotsShowing = loadDotsState();
 
+imgBtn.addEventListener("change", event => {
+    const file = event.target.files[0];
+
+    if(file) {
+        const imageUrl = URL.createObjectURL(file);
+        textureLoader.load(imageUrl, texture => {
+            monkey.material.map = texture;
+            monkey.material.needsUpdate = true;
+        })
+        monkey.material.needsUpdate = true;
+    }
+});
 
 const scene = new THREE.Scene();
 
@@ -26,6 +41,7 @@ camera.position.setX(0);
 
 renderer.render(scene, camera);
 
+const textureLoader = new THREE.TextureLoader();
 const monkeyTexture = new THREE.TextureLoader().load('monkey.jpg');
 const geometry = new THREE.BoxGeometry(20, 20, 20, 20);
 const material = new THREE.MeshBasicMaterial({map: monkeyTexture});
@@ -45,8 +61,7 @@ spinBtn.addEventListener("click", () => {
 });
 
 const gridHelper = new THREE.GridHelper(200, 50, 0x000, 0xffffff);
-gridShowing = true;
-scene.add(gridHelper);
+if(gridShowing) scene.add(gridHelper);
 
 gridBtn.addEventListener("click", () => {
     gridShowing = !gridShowing;
@@ -58,6 +73,8 @@ gridBtn.addEventListener("click", () => {
     else {
         scene.remove(gridHelper);    
     }
+
+    saveGridState(gridShowing);
 });
 
 function addStar() {
@@ -71,7 +88,21 @@ function addStar() {
     scene.add(star);
 }
 
-Array(200).fill().forEach(addStar);
+if(dotsShowing) Array(200).fill().forEach(addStar);
+dotsBtn.addEventListener("click", () => {
+    dotsShowing = !dotsShowing;
+    dotsBtn.textContent = dotsShowing ? "Hide Dots" : "Show Dots";
+    
+    if(dotsShowing) {
+        Array(200).fill().forEach(addStar);
+    }
+    else {
+        scene.children.filter(obj => obj.geometry?.type === "SphereGeometry")
+                      .forEach(obj => scene.remove(obj));
+    }
+
+    saveDotsState(dotsShowing);
+});
 
 const spaceTexture = new THREE.TextureLoader().load('space.jpg');
 scene.background = spaceTexture;
