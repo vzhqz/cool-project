@@ -112,7 +112,7 @@ function animate() {
 
     if(isSpinning) {
         monkey.rotation.x += 0.01;
-        monkey.rotation.y += 0.05;
+        monkey.rotation.y += 0.01;
         monkey.rotation.z += 0.01;
     }
 
